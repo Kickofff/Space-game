@@ -3,6 +3,8 @@ import sys
 from bullet import Bullet
 from allien import Allien
 import time
+#from Buttons import Button
+
 
 def events(screen, gun, bullets):
     for event in pygame.event.get():
@@ -17,8 +19,12 @@ def events(screen, gun, bullets):
             elif event.key == pygame.K_a:
                 gun.mleft = True
             elif event.key == pygame.K_SPACE:
+            #стрельба из пушки
                 new_bullet =  Bullet(screen, gun)
                 bullets.add(new_bullet)
+            elif event.key == pygame.K_ESCAPE:
+            #пауза
+                pause(screen)
                 
         elif event.type == pygame.KEYUP:
             # stop moving right
@@ -29,6 +35,7 @@ def events(screen, gun, bullets):
                 gun.mleft = False
 
 
+
 def update(bg_color, screen, gun, alliens, bullets):
     #обновление экрана 
     screen.fill(bg_color)
@@ -37,6 +44,7 @@ def update(bg_color, screen, gun, alliens, bullets):
     gun.inference()
     alliens.draw(screen)
     pygame.display.flip()
+    
     
 def update_bullets(screen, alliens, bullets):
     #обновление(удаление) позиции пуль
@@ -51,6 +59,7 @@ def update_bullets(screen, alliens, bullets):
         bullets.empty()
         create_army(screen, alliens)
     
+
     
 def gun_die(stats, screen, gun, alliens, bullets):
     #столкновение пушки и короблей
@@ -60,6 +69,31 @@ def gun_die(stats, screen, gun, alliens, bullets):
     create_army(screen, alliens)
     gun.create_gun()
     time.sleep(1)
+    
+def pause(screen):
+#реализация паузы
+    paused = True
+    while paused:
+        for event in pygame.event.get():
+             if event.type == pygame.QUIT:
+                sys.exit()
+        
+        print_text(screen, "Paused. Press enter to continue", 160, 300)
+        
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+            #пауза
+                paused = False
+            pygame.screen.update()
+            clock.tick(15)
+
+    
+def print_text(screen, message, x, y, font_color=(252, 252, 252),
+               font_type=r'images\beer-money12.ttf', font_size=30):
+    # Написание текста для пользователя
+    font_type = pygame.font.Font(font_type, font_size)
+    text = font_type.render(message, True, font_color)
+    screen.blit(text, (x, y))
     
             
 def update_alliens(stats, screen, gun, alliens, bullets):
