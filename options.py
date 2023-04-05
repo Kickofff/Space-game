@@ -1,10 +1,13 @@
 import pygame
+pygame.init()
 import sys
 from bullet import Bullet
 from allien import Allien
 import time
 #from Buttons import Button
 
+pygame.mixer.music.load(r'images\background_sound.mp3')
+pygame.mixer.music.set_volume(0.1)
 
 def events(screen, gun, bullets):
     for event in pygame.event.get():
@@ -71,21 +74,25 @@ def gun_die(stats, screen, gun, alliens, bullets):
     time.sleep(1)
     
 def pause(screen):
-#реализация паузы
+    #реализация паузы
     paused = True
+    
+    pygame.mixer.music.pause()
+    
     while paused:
         for event in pygame.event.get():
              if event.type == pygame.QUIT:
                 sys.exit()
-        
+
         print_text(screen, "Paused. Press enter to continue", 160, 300)
-        
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN:
+
+        if pygame.key.get_pressed()[pygame.K_RETURN]:
             #пауза
-                paused = False
-            pygame.screen.update()
-            clock.tick(15)
+            paused = False
+
+        pygame.display.update() 
+        
+    pygame.mixer.music.unpause()
 
     
 def print_text(screen, message, x, y, font_color=(252, 252, 252),
@@ -110,6 +117,7 @@ def alliens_check(stats, screen, gun, alliens, bullets):
         if allien.rect.bottom >= screen_rect.bottom:
             gun_die(stats, screen, gun, alliens, bullets)
             break
+            
 
 
 def create_army(screen, alliens):

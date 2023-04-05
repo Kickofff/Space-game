@@ -16,6 +16,7 @@ def start():
     alliens = Group()
     options.create_army(screen, alliens)
     stats = Stats() 
+    pygame.mixer.music.play(-1)
     
     while True:
         options.events(screen, gun, bullets)  
