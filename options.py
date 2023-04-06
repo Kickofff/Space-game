@@ -42,7 +42,6 @@ def events(screen, gun, bullets):
                 gun.mleft = False
 
 
-
 def update(bg_color, screen, gun, alliens, bullets):
     #обновление экрана 
     screen.fill(bg_color)
@@ -77,7 +76,33 @@ def gun_die(stats, screen, gun, alliens, bullets):
     bullets.empty()
     create_army(screen, alliens)
     gun.create_gun()
+    return game_over(screen)
     time.sleep(2)
+    
+def game_over(screen):
+    stopped = True
+    
+    
+    while stopped:
+        for event in pygame.event.get():
+             if event.type == pygame.QUIT:
+                sys.exit()
+
+        print_text(screen, "Game over. Press enter to play game, esc to exit",
+        70, 300)
+
+        if pygame.key.get_pressed()[pygame.K_RETURN]:
+            #пауза
+            return False
+        if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+            return True 
+            
+    
+
+        pygame.display.update() 
+        
+
+    
     
 def pause(screen):
     #реализация паузы

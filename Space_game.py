@@ -25,3 +25,4 @@ def start():
         options.update_bullets(screen, alliens, bullets)
         options.update_alliens(stats, screen, gun, alliens, bullets)
 start()
+
