@@ -9,6 +9,10 @@ import time
 pygame.mixer.music.load(r'images\background_sound.mp3')
 pygame.mixer.music.set_volume(0.1)
 
+die_gun_sound = pygame.mixer.Sound(r'images\Boom.mp3')
+die_gun_sound.set_volume(0.2)
+
+
 def events(screen, gun, bullets):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -49,6 +53,7 @@ def update(bg_color, screen, gun, alliens, bullets):
     pygame.display.flip()
     
     
+    
 def update_bullets(screen, alliens, bullets):
     #обновление(удаление) позиции пуль
     bullets.update()
@@ -66,12 +71,13 @@ def update_bullets(screen, alliens, bullets):
     
 def gun_die(stats, screen, gun, alliens, bullets):
     #столкновение пушки и короблей
+    pygame.mixer.Sound.play(die_gun_sound)
     stats.guns_left -= 1
     alliens.empty()
     bullets.empty()
     create_army(screen, alliens)
     gun.create_gun()
-    time.sleep(1)
+    time.sleep(2)
     
 def pause(screen):
     #реализация паузы

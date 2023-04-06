@@ -1,5 +1,9 @@
 import pygame
+pygame.init()
 
+
+shot_sound = pygame.mixer.Sound(r'images\gun_shot.mp3')
+shot_sound.set_volume(0.2)
 
 class Bullet(pygame.sprite.Sprite):
 
@@ -13,6 +17,8 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.centerx = gun.rect.centerx
         self.rect.top = gun.rect.top
         self.y = float(self.rect.y)
+        pygame.mixer.Sound.play(shot_sound)
+
             
     def bullet_go(self):
     #передвижение пули по y
