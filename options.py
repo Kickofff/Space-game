@@ -76,12 +76,14 @@ def gun_die(stats, screen, gun, alliens, bullets):
     bullets.empty()
     create_army(screen, alliens)
     gun.create_gun()
-    return game_over(screen)
-    time.sleep(2)
+    game_over(screen)
+    time.sleep(1)
     
 def game_over(screen):
+    #меню конца игры
     stopped = True
     
+    pygame.mixer.music.pause()
     
     while stopped:
         for event in pygame.event.get():
@@ -92,14 +94,13 @@ def game_over(screen):
         70, 300)
 
         if pygame.key.get_pressed()[pygame.K_RETURN]:
-            #пауза
+            pygame.mixer.music.unpause()
             return False
         if pygame.key.get_pressed()[pygame.K_ESCAPE]:
-            return True 
-            
-    
+            sys.exit()
 
         pygame.display.update() 
+    
         
 
     
