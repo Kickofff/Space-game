@@ -15,10 +15,6 @@ class Allien(pygame.sprite.Sprite):
         self.y = float(self.rect.y)
         
         
-    def draw_allien(self):
-    #вывод пришельца на экран 
-        self.screen.blit(self.image, self.rect)
-        
         
     def update(self):
     # обновление местоположения прешельцев 

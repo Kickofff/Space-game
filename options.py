@@ -1,6 +1,7 @@
 import pygame
 pygame.init()
 import sys
+import random
 from bullet import Bullet
 from allien import Allien
 import time
@@ -153,18 +154,36 @@ def alliens_check(stats, screen, gun, alliens, bullets):
 
 
 def create_army(screen, alliens):
-    #копирование пришельцев 
     allien = Allien(screen)
     allien_width = allien.rect.width
-    number_allien_x = int((700 - 2 * allien_width) / allien_width)
     allien_height = allien.rect.height
-    number_allien_y = int((800 - 100 - 2 * allien_height) / allien_height)
+    number_allien_x = int((700 - 2 * allien_width) / allien_width)
+    number_allien_y = 5
+    allien_spacing = 0
     
-    for row_number in range(number_allien_y - 1):
+    # создаем список всех возможных позиций пришельцев на экране
+    positions = []
+    for row_number in range(number_allien_y):
         for allien_number in range(number_allien_x):
-            allien = Allien(screen)
-            allien.x = allien_width + allien_width * allien_number
-            allien.y = allien_height + allien_height * row_number
-            allien.rect.x = allien.x
-            allien.rect.y = allien.rect.height + allien.rect.height * row_number
+            x = allien_width + allien_width * allien_number
+            y = allien_height + allien_height * row_number
+            positions.append((x, y))
+    
+    # перемешиваем список позиций, чтобы выбирать случайную позицию из разных мест на экране
+    random.shuffle(positions)
+    
+    # добавляем пришельцев на экран, по одному из каждой доступной позиции
+    for position in positions:
+        allien = Allien(screen)
+        allien.rect.x = position[0] 
+        allien.rect.y = position[1]
+        allien.x = float(allien.rect.x)
+        allien.y = float(allien.rect.y)
+        
+        
+        # проверяем, не пересекается ли текущий пришелец с уже созданными пришельцами
+        collision_rect = pygame.Rect(allien.rect.x - allien_spacing, allien.rect.y - allien_spacing, allien_width + 2 * allien_spacing, allien_height + 2 * allien_spacing)
+        if not any(allien.rect.colliderect(a.rect) for a in alliens) and collision_rect.collidelist([a.rect for a in alliens]) == -1:
             alliens.add(allien)
+            print(position)
+            # задержка перед созданием следующего пришельца, чтобы они появлялись постепенно сверху экрана
